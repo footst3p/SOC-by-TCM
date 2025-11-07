@@ -102,7 +102,7 @@ This is the process of detecting and responding to and resolving security incide
    - Lower MTTA&A - reduced response latency
   
 4. Incident Detection Rate:
-  - Higher rate = better visibilty and monitoring
+   - Higher rate = better visibilty and monitoring
 
 5. False Positive Rates (FPR):
    - Lower rate = more accurate detection
@@ -120,4 +120,30 @@ This is the process of detecting and responding to and resolving security incide
     - Agreement between the SOC and the SOC management.
   
 ### SOC Tools
+1. ### Security Information and Event Management (SIEM):
+   SIEM is a centralised platform for collecting, correlating, analysing, and managing security event data in reaal-time.
 
+2. ### Security Orchestration, Automation, and Response (SOAR):
+   - Orchestration: Workflow, collaboration
+   - Automation: Alert triage, artefact collection, and data enrichment.
+   - Incident Response: Assess and prioritize
+   - Integration: TIPs, EDR,Firewall, etc.
+   - Analytics and intelligence
+   - Reporting
+
+3. ### Incident Management Tools:
+   - Incident Ticketing
+   - Alert Management
+   - Workflow Automation
+   - Collaboration
+  
+4. ### Network Security Monitoring (NSM):
+   - Packet capture and analysis
+   - Network traffic analysis
+   - Intrusion Detection
+   - Integration with SIEM
+  
+5. ### IDS and IPS:
+   - IDS: Designed to detect security incidents and generate alers based on their predefined criteria like known attack           signatures or anomalous behavious or different policy violations that we set up.
+   - IPS: Used to prevent attacks and actually builds upon the capabilities of an IDS by actively blocking or preventing          detected threats in real-time.
+     
