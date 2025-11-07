@@ -55,6 +55,6 @@ Ubuntu Configuration:
 
 `sudo apt install linux-headers-$(uname -r)`
 
-###**Course Repo:**
+### **Course Repo:**
 
 [https://github.com/MalwareCube/SOC101](https://github.com/MalwareCube/SOC101.git)
