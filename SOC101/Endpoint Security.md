@@ -1,0 +1,239 @@
+### Introduction to Endpoint Security
+An Endpoint is any physical device that connects to an organisation's network.
+
+- Workstations: Desktops and Laptops
+- Mobile Devices: Smartphones and Tablets.
+- Servers: Email, web, database, file server, etc.
+- IoT Devices: Smart printers, cameras, appliances, etc.
+- Network Equipment: Routers, switches, firewalls, etc.
+
+### Endpoint Security Controls
+1. Antivirus / Antimalware: Software designed to remove malicious software or malware from computers and networks.
+2. Endpoint Detection and Response (EDR): Technology focused on monitoring and responding to threats on endpoints in real-time.
+3. Extended Detection and Response (XDR):
+   - The integration of multiple security controls and telemetry.
+   - Runbooks and automated responses to the routine threats.
+4. Data Loss Prevention (DLP):
+   - A strategy and set of technologies that aim to protect sensitive data from unauthorised access, use, or transmission.
+   - Protect data at rest, transit, and in processing.
+5. User and Entity Behaviour Analytics (UBA): Monitoring and analysing user behaviour patterns to detect anomalous or suspicious
+   activities that indicate things like insider threats or compromised accounts.
+6. HIDs/HIPs: These are security measures for monitoring and protecting individual devices or hosts from malicious activities.
+7. Host-based Firewall: A type of firewall that operates at the individual host level to control incoming or outgoing traffic
+   based on predetermined security rules.
+
+### Endpoint Security Monitoring
+1. Process Execution:
+   - Monitoring running processes.
+   - Executable files, PIDs, command-line arguments.
+   - Parent-child process hierarchy.
+  
+2. File System Changes:
+   - Creation, modification, deletion.
+   - File Integrity Monitoring (FIM).
+     
+3. Network Connections:
+   - Traffic and connections initiated from the endpoint.
+   - Associated processes and executables.
+  
+4. Registry Modifications:
+   - Monitoring registry key and values.
+   - Detect backdoor, persistence, and detection evasion.
+  
+### Creating our own Malware
+References
+- https://docs.rapid7.com/metasploit/installing-the-metasploit-framework/
+- https://github.com/rapid7/metasploit-omnibus
+###  Windows Network Analysis
+Process
+- Running instances of programs and applications
+  - Partitioned set of system resources (CPU, memory, I/O)
+- System (Windows) processes
+   - OS core function
+   - System, smss.exe, csrss.exe
+- User (Application) processes
+   - Initiated by users
+   - Chrome.exe, notepad.exe, minesweeper.exe
+- Service (Background) processes
+   - Background functions
+   - Windows update, print spooler, lsass.exe<br>
+
+References
+- https://learn.microsoft.com/en-us/sysinternals/downloads/tcpview
+ 
+### Windows Process Analysis
+References
+- https://www.revshells.com/
+
+### Windows Core Processes
+1. smss.exe (Session Manager Subsystem)
+   - Windows Session Manager
+   - Initiating and managing user sessions.
+   - Launches child processes - wininit.exe, csrss.exe
+2. csrss.exe (Client/Server Runtime Subsystem)
+   - Managing console Windows
+   - Importing DLLs for the Windows API
+   - GUI tasks would shut down
+3. wininit.exe (Windows initialisation)
+   - Initialise all the things!
+   - Session 0
+   - Spawn child processes (Services.exe, lsass.exe)
+4. Services.exe (Service Control Manager)
+   - Service Control Manager (SCM)
+   - Starting, stopping, and interacting with the service
+   - Sets the LastKnownGood CurrentControlSet registry value.
+5. svhost.exe (Service Host)
+   - Hosting and managing Windows services
+   - Used to run service DLLs
+   - Run with the -k parameter to differentiate instances/services
+6. lsass.exe (Local Security Authority Subsystem Service)
+   - Authenticating users
+   - Implementing local security policies
+   - Writing events to the security event log.
+7. winlogon.exe (Windows Logon)
+   - Manages login and logout procedures
+   - Loads users' profiles (NTUSER.DAT)
+   - Responds to the Secure Attention Sequence (SAS)
+8. explorer.exe (Windows Explorer)
+   - Provides the GUI for files, folders, and system settings.
+   - Manages the taskbar, Start Menu, and desktop
+   - Responsible for the overall desktop environment.<br>
+References
+- https://learn.microsoft.com/en-us/sysinternals/downloads/process-explorer
+- https://www.sans.org/posters/hunt-evil/
+
+### Process Investigation
+1. Parent Process: Is this the expected process hierarchy?
+2. Child Process: Is this the expected process hierarchy?
+3. Command Line Arguments: svhost -k
+4. Process Names: Types, lookalikes, copies.
+5. User Account: Is this process running from the expected user account?
+6. Image Path: Is this process running the expected executable?
+
+### Windows Autoruns
+Autorun Registry Keys
+`HKCU\Software\Microsoft\Windows\CurrentVersion\Run`<br>
+`HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce`<br>
+`HKLM\Software\Microsoft\Windows\CurrentVersion\Run`<br>
+`HKLM\Software\Microsoft\Windows\CurrentVersion\RunOnce`<br>
+Service Configuration Keys
+`HKLM\SYSTEM\CurrentControlSet\Services`<br>
+New-AutoRunsBaseLine - Baseline
+```html
+Get-PSAutorun -VerifyDigitalSignature |
+Where { -not($_.isOSbinary)} |
+New-AutoRunsBaseLine -Verbose -FilePath .\Baseline.ps1
+```
+<br>
+New-AutoRunsBaseLine - CurrentState
+```html
+Get-PSAutorun -VerifyDigitalSignature |
+Where { -not($_.isOSbinary)} |
+New-AutoRunsBaseLine -Verbose -FilePath .\CurrentState.ps1
+```
+<br>
+References:
+- https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns
+- https://github.com/p0w3rsh3ll/AutoRuns
+
+### Windows Scheduled Tasks
+References
+- https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/schtasks
+- https://www.elastic.co/security-labs/exploring-the-qbot-attack-pattern
+- https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns
+- https://github.com/p0w3rsh3ll/AutoRuns
+
+### Windows Event Logs
+1. Security Event IDS
+   - 4720 - A user account was created.
+   - 4722 - A user account was enabled
+   - 4723 - An attempt was made to change an account's password
+   - 4724 - An attempt was made to reset an acciunt's password.
+   - 4738 - A user account was changed.
+   - 4725 - A user account was disabled.
+   - 4726 - A user account was deleted.
+   - 4732 - A member was added to security-enabled local group.
+   - 4688 - A new process has been created.
+   - 1102 - The audit log was cleared.
+   - 7045 - A service was installed in the system.
+   - 7030 - The Servce Control Manager tried to make a corrective action (Restart the service)
+   - 7035 - The Service Control Manager is transitioning services to a running state.
+   - 7036 - The Service Control Manager has reported that a service has entered the running state.
+
+2. System Event IDS
+   - Event ID 1 - Process creation
+   - Event ID 3 - Network Connection
+   - Event ID 5 - Process Terminated
+   - Event ID 7 - Image loaded
+   - Event ID 8 - CreateRemoteThreat
+   - Event ID 10 - ProcessAccess
+   - Event ID 11 - FileCreate
+   - Event ID 12, 13, 14 - Registry Events
+   - Event ID 15 - FileCreateStreamHash
+   - Event ID 22 - DNSEvent (DNS Query)
+  
+### Introduction to Sysmon
+References
+- https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
+- https://github.com/SwiftOnSecurity/sysmon-config
+- https://github.com/olafhartong/sysmon-modular
+
+### Sysmon Events
+Event Viewer: Process ID XML Query
+```html
+<QueryList> 
+ <Query Id="0" Path="Microsoft-Windows-Sysmon/Operational">
+  <Select Path="Microsoft-Windows-Sysmon/Operational"> *[System[Provider[@Name='Microsoft-Windows-Sysmon']]] and *[EventData[Data[@Name='ProcessId'] and (Data='<ENTER YOUR PID HERE>')]] </Select>
+ </Query>
+</QueryList>
+```
+<br>
+Event Viewer: Process ID XML Query - Process Creation Events
+```html
+<QueryList>
+  <Query Id="0" Path="Microsoft-Windows-Sysmon/Operational">
+	<Select Path="Microsoft-Windows-Sysmon/Operational">
+  	*[System[Provider[@Name='Microsoft-Windows-Sysmon'] and (EventID=1)]]
+  	and
+  	*[EventData[Data[@Name='ProcessId'] and (Data='<ENTER YOUR PID HERE>')]]
+	</Select>
+  </Query>
+</QueryList>
+```
+<br>
+PowerShell: Get-WinEvent
+```html
+Get-WinEvent -LogName "Microsoft-Windows-Sysmon/Operational"
+
+Get-WinEvent -FilterHashtable @{logname="Microsoft-Windows-Sysmon/Operational"; id=1}
+
+Get-WinEvent -FilterHashtable @{logname="Microsoft-Windows-Sysmon/Operational"; id=3} -MaxEvents 1 | Format-List *
+
+Get-WinEvent -LogName 'Microsoft-Windows-Sysmon/Operational' -FilterXPath "*[System/EventID=3 and EventData[Data[@Name='DestinationPort']='4444']]" | Format-List *
+
+Get-WinEvent -LogName 'Microsoft-Windows-Sysmon/Operational' -FilterXPath "*[System/EventID=1]"
+
+Get-WinEvent -LogName 'Microsoft-Windows-Sysmon/Operational' -FilterXPath "*[System/EventID=1 and EventData[Data[@Name='ProcessId']='<ENTER YOUR PID HERE>']]" | Format-List *
+```
+<br>
+
+References
+- https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
+- https://github.com/SwiftOnSecurity/sysmon-config
+- https://github.com/ParrotSec/mimikatz
+- https://github.com/PeterDaveHello/top-1m-domains
+
+
+### Linux Cron Jobs
+References
+- https://crontab.guru/
+
+###   Introduction to LimaCharlie
+References
+- https://limacharlie.io/
+- https://app.limacharlie.io/signup
+
+###   LimaCharlie: Endpoint Detection and Response
+References
+- https://limacharlie.io/
+- https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/rundll32
