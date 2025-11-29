@@ -1,0 +1,146 @@
+### Introduction to SIEM and Log Management
+Security Information and Event Management (SIEM) is a centralised platform for collecting, analysing and correlating different security
+events in real-time.<br>
+- Log management
+- Real-time monitoring
+- Alert and notification
+- Incident response
+- Dashboards, reports, and visualisation
+- Threat intelligence integration
+
+### SIEM Log Management
+- Collection
+- Aggregation
+- Parsing and normalisation
+- Retention
+- Indexing
+- Correlation and analysis
+- ALert
+
+### Type of Logs
+1. System logs
+   - Windows event logs
+   - System logs
+   - Linux/Unix system
+2. Network logs
+   - Firewall logs
+   - Proxy logs
+   - DNS logs
+3. Application logs
+   - Database logs
+   - Web server/HTTP logs
+   - App logs
+4. Security logs
+   - Authentication logs
+   - IDS/IPS logs
+   - Endpoint security logs
+5. Cloud logs
+   - AWS CloudTrail logs
+   - Azure activity logs
+6. Audit logs
+   - Audit trail logs
+
+### Log Formats
+1. Unstructured logs
+   - No predefined format or syntax
+   - Common log format (CLF)
+2. Semi-structured logs
+   - Some syntax structure
+   - Lack of adherence to a shema
+   - Syslog
+   - Windows Event Log (EVT)
+3. Structured log
+   - Well-defined syntax and formatting
+   - Adherence to an agreed-upon schema
+   - CSV, TSV
+   - JSON
+   - XML
+
+### Common Attack Signatures
+1. User Behaviour Indicators
+   - Multiple Failed Login Attempts
+       - Incorrect usernames or passwords
+       - Increase in failures from a single user account
+    - Login Times
+       - Time of day for logons or access requests is taking place.
+       - Abnormalities from a user's baselines
+    - Login/Access Locations
+       - Geographic locations of logons or access requests
+       - Unusual countries or regions
+    - File Access Pattern
+       - File paths, modification
+    - User-Agent Strings
+       - Unusual or associated with known tools
+2. SQL Injection
+   - Inserting or injecting malicious SQL statements
+   - Manipulate expected database queries
+      - Retrieve sensitive information
+      - Extract hashed passwords
+      - Bypass authentication login
+3. Cross-Site Scripting
+   - Executing malicious code by injecting JavaScript
+      - Hijack user sessions
+      - Steal cookies
+      - Deface websites
+4. Command Injection
+   - Executing arbitrary OS commands
+   - Look for special characters that separate commands
+5. Path Traversal and Local File Inclusion
+   - Accessing files outside of the web roots
+   - Path Traversal
+     - Access files/directories outside of the web root
+     - Enumerate the system, read hardcoded credentials
+   - Local File Inclusion (LFI)
+     - Include a local file from the system
+     - Enumerate  the system, read hardcoded credentials
+     - Execute scripts/remote code execution
+### Structured Log Analysis
+References
+- https://jqlang.github.io/jq/
+### Introduction to Splunk
+References
+- https://www.splunk.com/
+- https://www.splunk.com/en_us/download/splunk-enterprise.html<br>
+Note: The ARM architecture is not supported for use with Splunk Enterprise at this time. Please see the system requirements<br>
+here: https://docs.splunk.com/Documentation/Splunk/9.4.0/Installation/Systemrequirements
+### Managing Splunk on Your Lab Machine
+If you installed Splunk on your regular lab machine, feel free to stop the 
+service and disable it from auto-starting to save on resources.<br>
+
+You can always re-enable it if you want to start it up again and get more practice.
+
+### To stop the Splunk service, use:
+`sudo /opt/splunk/bin/splunk stop`
+
+### To disable Splunk from starting automatically at boot:
+`sudo systemctl disable splunk`
+
+### If needed, you can re-enable it later with:
+`sudo systemctl enable splunk`
+### Splunk: Search Processing Language (SPL)
+References
+- https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+- https://docs.splunk.com/Documentation/SplunkCloud/9.2.2403/SearchReference/UnderstandingSPLsyntax
+### Splunk: Search Commands
+References
+- https://docs.splunk.com/Documentation/Splunk/9.2.2/SearchReference/ListOfSearchCommands
+### Splunk: Reports and Alerts
+References
+- https://docs.splunk.com/Documentation/Splunk/9.2.2/Report/Createandeditreports
+- https://docs.splunk.com/Documentation/Splunk/latest/Alert/Aboutalerts
+### Splunk: Creating Dashboards
+References
+- https://docs.splunk.com/Documentation/Splunk/9.2.2/SearchTutorial/Createnewdashboard
+### Splunk: Website Defacement Investigation
+References
+- https://bots.splunk.com
+- https://github.com/splunk/botsv1
+- https://github.com/splunk/botsv2
+- https://github.com/splunk/botsv3
+- https://www.virustotal.com/gui/home/upload
+- https://talosintelligence.com/
+- https://otx.alienvault.com/
+- https://regex101.com
+### Splunk: Deploying a Forwarder and Generating Real-Time Alerts
+Resources
+- https://splunk.com/en_us/download/universal-forwarder.html
